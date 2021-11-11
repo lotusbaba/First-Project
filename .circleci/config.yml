@@ -50,7 +50,7 @@ jobs:
       - run:
           name: "Call compute serve test 1"
           command: |
-             TAG=0.1.$CIRCLE_BUILD_NUM
+             TAG=latest
              docker run -d -p 7676:7676 --name fastly-cae-server --entrypoint ~/.bin/fastly lotusbaba/fastly-images:latest compute serve]
              docker exec fastly-cae-server curl --retry 10 --retry-connrefused http://localhost:7676
 # Invoke jobs via workflows
