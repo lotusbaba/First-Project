@@ -1,0 +1,23 @@
+# This file describes a Fastly Compute@Edge package. To learn more visit:
+# https://developer.fastly.com/reference/fastly-toml/
+
+authors = ["jay.bhaskar@gmail.com"]
+description = "First project"
+language = "rust"
+manifest_version = 2
+name = "Pantheon"
+service_id = ""
+
+[setup]
+
+  [setup.backends]
+
+    [setup.backends.backend_name]
+      address = "reqbin.com"
+      description = "A backend able to serve `/articles` path"
+      port = 443
+
+    [setup.backends.other_backend_name]
+      address = "httpbin.org"
+      description = "A backend able to serve `/anything` path"
+      port = 443
