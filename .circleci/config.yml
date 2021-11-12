@@ -14,7 +14,7 @@ jobs:
     docker:
       
       # replace with your preferred image
-      - image: cimg/base:stable
+      - image: ubuntu
         auth:
             username: lotusbaba
             password: $DOCKERHUB_PASSWORD
