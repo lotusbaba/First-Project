@@ -12,8 +12,12 @@ orbs:
 jobs:
   example-job:
     docker:
+      
       # replace with your preferred image
       - image: lotusbaba/fastly-images
+        auth:
+            username: lotusbaba
+            password: $DOCKERHUB_PASSWORD
     steps:
       - docker/build:
           tag: latest 
@@ -27,6 +31,9 @@ jobs:
     docker:
 #      - image: lotusbaba/fastly-images:0.1.$CIRCLE_BUILD_NUM
       - image: lotusbaba/fastly-images:latest
+        auth:
+            username: lotusbaba
+            password: $DOCKERHUB_PASSWORD
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps    
     description: Call compute serve and run commands.
