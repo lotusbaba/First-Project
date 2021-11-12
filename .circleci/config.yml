@@ -29,7 +29,7 @@ jobs:
             mkdir ~/.bin && curl -L https://github.com/fastly/cli/releases/download/v<< parameters.version >>/fastly_v<< parameters.version >>_linux-386.tar.gz | tar zxv && mv fastly ~/.bin/ && echo 'export PATH=$PATH:~/.bin' >> $BASH_ENV
             mkdir ~/.branch-dir
             git clone "$CIRCLE_REPOSITORY_URL" --branch "$CIRCLE_BRANCH"
-            docker build -t lotusbaba/fastly-images:latest -f Dockerfile
+            docker build -t lotusbaba/fastly-images:latest -f ./Dockerfile
       - run:
           name: Archive Docker image
           command: docker save -o image.tar $IMAGE_NAME
