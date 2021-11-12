@@ -26,7 +26,7 @@ jobs:
       - run:
           name: Build Docker image
           command: |
-            docker build -f Dockerfile -t lotusbaba/fastly-images:latest
+            docker build -f Dockerfile -t lotusbaba/fastly-images:latest .
 #            mkdir ~/.bin && curl -L https://github.com/fastly/cli/releases/download/v<< parameters.version >>/fastly_v<< parameters.version >>_linux-386.tar.gz | tar zxv && mv fastly ~/.bin/ && echo 'export PATH=$PATH:~/.bin' >> $BASH_ENV
 #            mkdir ~/.branch-dir
 #            git clone "$CIRCLE_REPOSITORY_URL" --branch "$CIRCLE_BRANCH"
