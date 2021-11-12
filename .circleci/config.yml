@@ -7,7 +7,7 @@ executors:
     environment:
       IMAGE_NAME: lotusbaba/fastly-images
     docker:
-      - image: cimg/base:stable
+      - image: $IMAGE_NAME:latest
 
 # Define a job to be invoked later in a workflow.
 #          TAG=0.1.$CIRCLE_BUILD_NUM
