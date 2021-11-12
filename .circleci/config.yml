@@ -6,33 +6,53 @@ orbs:
   docker: circleci/docker@1.7.0
 executors:
   my-executor:
+    environment:
+      IMAGE_NAME: lotusbaba/fastly-images
     docker:
       - image: cimg/base:stable
-        auth:
-          username: lotusbaba
-          password: $DOCKERHUB_PASSWORD
-commands:
-  install:
-    description: Installs the Fastly CLI
+
+# Define a job to be invoked later in a workflow.
+#          TAG=0.1.$CIRCLE_BUILD_NUM
+# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+jobs:
+  build:
+    executor: my-executor
     parameters:
       version:
         type: string
         default: "0.42.0"
         description: The Fastly CLI version to install.
     steps:
+      - checkout
+      - setup_remote_docker
       - run:
-          name: Install Fastly CLI
+          name: Build Docker image
           command: |
             mkdir ~/.bin && curl -L https://github.com/fastly/cli/releases/download/v<< parameters.version >>/fastly_v<< parameters.version >>_linux-386.tar.gz | tar zxv && mv fastly ~/.bin/ && echo 'export PATH=$PATH:~/.bin' >> $BASH_ENV
             mkdir ~/.branch-dir
             git clone "$CIRCLE_REPOSITORY_URL" --branch "$CIRCLE_BRANCH"
             docker build -t lotusbaba/fastly-images:latest .
-             echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-             docker push lotusbaba/fastly-images:latest
-# Define a job to be invoked later in a workflow.
-#          TAG=0.1.$CIRCLE_BUILD_NUM
-# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
-jobs:
+      - run:
+          name: Archive Docker image
+          command: docker save -o image.tar $IMAGE_NAME
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./image.tar
+  publish-latest:
+    executor: my-executor
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      - setup_remote_docker
+      - run:
+          name: Load archived Docker image
+          command: docker load -i /tmp/workspace/image.tar
+      - run:
+          name: Publish Docker Image to Docker Hub
+          command: |
+            echo "$DOCKERHUB_PASSWORD" | docker login -u lotusbaba --password-stdin
+            docker push $IMAGE_NAME:latest
   say-hello:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
@@ -57,4 +77,8 @@ jobs:
 workflows:
   say-hello-workflow:
     jobs:
+      - build
+      - publish-latest:
+          requires:
+            - build
       - say-hello
