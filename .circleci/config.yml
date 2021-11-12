@@ -13,10 +13,10 @@ jobs:
   example-job:
     docker:
       # replace with your preferred image
-      - image: cimg/base:stable
+      - image: lotusbaba/fastly-images
     steps:
       - docker/build:
-          tag: $CIRCLE_SHA1 
+          tag: latest 
           dockerfile: Dockerfile 
           image: fastly-cae-build
     parallelism: 1
@@ -42,7 +42,6 @@ jobs:
     parallelism: 1
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
-
 
 workflows:
   say-hello-workflow:
