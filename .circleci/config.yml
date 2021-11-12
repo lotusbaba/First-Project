@@ -19,7 +19,7 @@ jobs:
           tag: lotusbaba/fastly-images:$CIRCLE_SHA1 
           dockerfile: Dockerfile 
           image: fastly-cae-build
-  
+    parallelism: 1
   say-hello:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
@@ -39,6 +39,7 @@ jobs:
              TAG=latest
              docker run -d -p 7676:7676 --name fastly-cae-server --entrypoint ~/.bin/fastly lotusbaba/fastly-images:latest compute serve]
              docker exec fastly-cae-server curl --retry 10 --retry-connrefused http://localhost:7676
+    parallelism: 1
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 
