@@ -16,7 +16,7 @@ jobs:
       - image: cimg/base:stable
     steps:
       - docker/build:
-          tag: lotusbaba/fastly-images:$CIRCLE_SHA1 
+          tag: $CIRCLE_SHA1 
           dockerfile: Dockerfile 
           image: fastly-cae-build
     parallelism: 1
