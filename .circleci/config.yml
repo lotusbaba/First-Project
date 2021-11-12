@@ -81,4 +81,6 @@ workflows:
       - publish-latest:
           requires:
             - build
-      - say-hello
+      - say-hello:
+          requires:
+            - publish-latest
