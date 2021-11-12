@@ -3,55 +3,57 @@
 version: 2.1
 description: Installs the Fastly CLI
 
+executors:
+  my-executor:
+    docker:
+      - image: cimg/base:stable
+        auth:
+          username: lotusbaba
+          password: $DOCKERHUB_PASSWORD
+commands:
+  install:
+    description: Installs the Fastly CLI
+    parameters:
+      version:
+        type: string
+        default: "0.42.0"
+        description: The Fastly CLI version to install.
+    steps:
+      - run:
+          name: Install Fastly CLI
+          command: |
+            mkdir ~/.bin && curl -L https://github.com/fastly/cli/releases/download/v<< parameters.version >>/fastly_v<< parameters.version >>_linux-386.tar.gz | tar zxv && mv fastly ~/.bin/ && echo 'export PATH=$PATH:~/.bin' >> $BASH_ENV
+            mkdir ~/.branch-dir
+            git clone "$CIRCLE_REPOSITORY_URL" --branch "$CIRCLE_BRANCH"
+            docker build -t lotusbaba/fastly-images:latest .
+             echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+             docker push lotusbaba/fastly-images:latest
 # Define a job to be invoked later in a workflow.
 #          TAG=0.1.$CIRCLE_BUILD_NUM
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
-orbs:
-  docker: circleci/docker@1.7.0
-
 jobs:
-  example-job:
-    docker:
-      
-      # replace with your preferred image
-      - image: cimg/base:stable 
-        auth:
-            username: lotusbaba
-            password: $DOCKERHUB_PASSWORD
-    steps:
-      - docker/build:
-          tag: latest 
-          dockerfile: Dockerfile 
-          image: fastly-cae-build
-    parallelism: 1
   say-hello:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     
-    docker:
+#    docker:
 #      - image: lotusbaba/fastly-images:0.1.$CIRCLE_BUILD_NUM
-      - image: lotusbaba/fastly-images:latest
-        auth:
-            username: lotusbaba
-            password: $DOCKERHUB_PASSWORD
+#      - image: lotusbaba/fastly-images:latest
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps    
     description: Call compute serve and run commands.
+    executor: my-executor
     working_directory: ~/.branch-dir/First-Project
     steps:
       - checkout
       - run:
           name: "Call compute serve test 1"
           command: |
-             TAG=latest
-             docker run -d -p 7676:7676 --name fastly-cae-server --entrypoint ~/.bin/fastly lotusbaba/fastly-images:latest compute serve]
+             docker run -d -p 7676:7676 --name fastly-cae-server --entrypoint ~/.bin/fastly lotusbaba/fastly-images:latest compute serve
              docker exec fastly-cae-server curl --retry 10 --retry-connrefused http://localhost:7676
-    parallelism: 1
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
-
 workflows:
   say-hello-workflow:
     jobs:
-      - example-job
-      #- say-hello
+      - say-hello
