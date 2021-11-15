@@ -46,6 +46,7 @@ fn main(mut req: Request) -> Result<Response, Error> {
 
         // If request is to the `/articles` path, send to a named backend.
         "/articles" => {
+		println!("We are going to www.example.com");
             // Request handling logic could go here...  E.g., send the request to an origin backend
             // and then cache the response for one minute.
             req.set_ttl(60);

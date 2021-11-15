@@ -21,3 +21,8 @@ service_id = ""
       address = "httpbin.org"
       description = "A backend able to serve `/anything` path"
       port = 443
+[local_server]
+  [local_server.backends]
+    [local_server.backends.backend_name]
+      url = "https://www.example.com"
+      override_host = "www.example.com"
