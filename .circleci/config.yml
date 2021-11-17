@@ -37,7 +37,8 @@ executors:
     environment:
       IMAGE_NAME: lotusbaba/fastly-images
     docker:
-      - image: $IMAGE_NAME:latest
+#      - image: $IMAGE_NAME:latest
+       - image: cimg/openjdk:14.0
 jobs:
   build:
     machine: true
