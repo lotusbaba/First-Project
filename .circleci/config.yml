@@ -32,6 +32,12 @@ image_config: &image_config
   BROWSERS: false
 
 version: 2
+executors:
+  my-executor:
+    environment:
+      IMAGE_NAME: lotusbaba/fastly-images
+    docker:
+      - image: $IMAGE_NAME:latest
 jobs:
   build:
     machine: true
@@ -55,7 +61,7 @@ jobs:
       - image: $DOCKER_USERNAME/fastly-image:latest
         environment:
           <<: *image_config
-
+    executor: my-executor
     steps:
       - checkout
 
