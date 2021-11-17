@@ -48,7 +48,8 @@ jobs:
       - run: docker push $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG && sleep 10
 
       - store_artifacts:
-          path: ./.circleci/Dockerfile
+          path: ./.circleci
+          dockerfile: ./.circleci/Dockerfile
 
   test_image:
     docker:
