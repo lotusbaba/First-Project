@@ -62,7 +62,7 @@ jobs:
       - run:
           name: bats tests
           command: |
-             docker run -d -p 7676:7676 --name fastly-cae-server --entrypoint ~/.bin/fastly lotusbaba/fastly-images:latest compute serve
+             docker run -d -p 7676:7676 --name fastly-cae-server
              docker exec fastly-cae-server curl --retry 10 --retry-connrefused http://localhost:7676
 
       - store_test_results:
