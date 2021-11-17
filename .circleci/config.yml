@@ -32,6 +32,13 @@ image_config: &image_config
   BROWSERS: false
 
 version: 2
+executors:
+  my-executor:
+    environment:
+      IMAGE_NAME: lotusbaba/fastly-images
+    docker:
+#      - image: $IMAGE_NAME:latest
+       - image: cimg/openjdk:14.0
 jobs:
   build:
     machine: true
@@ -55,7 +62,7 @@ jobs:
       - image: $DOCKER_USERNAME/fastly-image:latest
         environment:
           <<: *image_config
-
+    executor: docker
     steps:
       - checkout
 
