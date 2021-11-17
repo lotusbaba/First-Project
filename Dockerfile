@@ -19,7 +19,7 @@ RUN apt-get --assume-yes install gcc
 RUN curl -L https://github.com/fastly/cli/releases/download/v0.42.0/fastly_v0.42.0_linux-amd64.tar.gz | tar zxv && mv ./fastly /bin/
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable 
 ENV PATH="/root/.cargo/bin:${PATH}"
-RUN rustup target add wasm32-wasi --toolchain stable
+RUN /root/.cargo/bin/rustup target add wasm32-wasi --toolchain stable
 
 
 RUN mkdir /home/branch-dir
