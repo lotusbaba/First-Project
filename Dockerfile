@@ -17,9 +17,12 @@ RUN apt-get --assume-yes install vim
 RUN apt-get --assume-yes install git
 RUN apt-get --assume-yes install gcc
 RUN curl -L https://github.com/fastly/cli/releases/download/v0.42.0/fastly_v0.42.0_linux-amd64.tar.gz | tar zxv && mv ./fastly /bin/
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable 
+#RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable 
+RUN export PATH="$HOME/.cargo/bin:$PATH"
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ENV PATH="/root/.cargo/bin:${PATH}"
 RUN /root/.cargo/bin/rustup target add wasm32-wasi --toolchain stable
+RUN rustup target add wasm32-wasi --toolchain stable
 #RUN $HOME/.cargo/bin/rustc target add wasm32-wasi --toolchain stable
 
 
