@@ -64,14 +64,16 @@ jobs:
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps    
     description: Call compute serve and run commands.
     executor: my-executor
-    working_directory: ~/.branch-dir/First-Project
+    working_directory: /home/branch-dir/First-Project
     steps:
       - checkout
       - run:
           name: "Call compute serve test 1"
           command: |
-             docker run -d -p 7676:7676 --name fastly-cae-server --entrypoint ~/.bin/fastly lotusbaba/fastly-images:latest compute serve
-             docker exec fastly-cae-server curl --retry 10 --retry-connrefused http://localhost:7676
+              docker run -d -p 7676:7676 --name fastly-cae-server
+              docker exec fastly-cae-server curl --retry 10 --retry-connrefused http://localhost:7676
+#             docker run -d -p 7676:7676 --name fastly-cae-server --entrypoint ~/.bin/fastly lotusbaba/fastly-images:latest compute serve
+             
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
